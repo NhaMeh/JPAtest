@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="nl"
+      xmlns:th="http://www.thymeleaf.org">
+<!--suppress HtmlRequiredTitleElement -->
+<head th:replace="fragments::head(title='Order')"></head>
+<body>
+<div th:if="${order} != null">
+    <h1 th:text="|Order ${order.getId()}|"></h1>
+    <p>
+        Ordered:<br/>
+        <span class="value"
+              th:text="${order.getOrderDate()}"></span>
+    </p>
+    <p>
+        Required:<br/>
+        <span class="value"
+              th:text="${order.getRequiredDate()}"></span>
+    </p>
+    <p>
+        Customer:<br/>
+        <span class="value"
+              th:text="${customer.getName()}"></span><br/>
+        <span class="value"
+              th:text="${customer.getStreetAndNumber()}"></span><br/>
+        <span class="value"
+              th:if="${customer.getState()} != null"
+              th:text="|${customer.getPostalCode()} ${customer.getCity()} ${customer.getState()}|"></span>
+        <span class="value"
+              th:if="${customer.getState()} == null"
+              th:text="|${customer.getPostalCode()} ${customer.getCity()}|"></span>
+        <br/>
+        <span class="value"
+              th:text="${countryName}"></span>
+    </p>
+    <p>
+        Comments:<br/>
+        <span class="value"
+              th:text="${order.getComments()}"></span>
+    </p>
+    <p>
+        Details:<br/>
+    <table id="productDeatils">
+        <tr>
+            <th>Product</th>
+            <th>Price each</th>
+            <th>Quantity</th>
+            <th>Value</th>
+            <th>Deliverable</th>
+        </tr>
+        <tr th:each="entry:${productsAndOrderedQuantity}">
+            <td th:text="${entry.getKey().getName()}"></td>
+            <td class="number"
+                th:text="${entry.getKey().getBuyPrice()}"></td>
+            <td class="number"
+                th:text="${entry.getValue()}"></td>
+            <td class="number"
+                th:text="${entry.getKey().getBuyPrice() * entry.getValue()}"></td>
+            <td class="deliverable"
+                th:if="${entry.getKey().getQuantityInStock() >= entry.getValue()}">&check;
+            </td>
+            <td class="deliverable"
+                th:if="${entry.getKey().getQuantityInStock() < entry.getValue()}">&cross;
+            </td>
+        </tr>
+    </table>
+    </p>
+    <p>
+        Value:<br/>
+        <span th:text="${total}"></span>
+    </p>
+</div>
+</body>
+</html>

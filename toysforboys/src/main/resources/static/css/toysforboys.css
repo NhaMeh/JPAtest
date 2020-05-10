@@ -1,0 +1,37 @@
+span.value {
+    font-weight: bold;
+}
+
+table, th, tr, td {
+    border: 1px solid darkgray;
+    border-collapse: collapse;
+}
+
+table th {
+    background-color: dimgrey;
+    color: white;
+}
+
+table tr:nth-child(odd) {
+    background-color: white;
+}
+
+table tr:nth-child(even) {
+    background-color: lightgray;
+}
+
+#productDeatils .deliverable {
+    text-align: center;
+}
+
+#productDeatils th {
+    text-align: center;
+}
+
+#productDeatils {
+    text-align: right;
+}
+
+#failed {
+    color: red;
+}

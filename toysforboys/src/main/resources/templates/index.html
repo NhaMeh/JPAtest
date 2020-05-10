@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="nl"
+      xmlns:th="http://www.thymeleaf.org">
+<!--suppress HtmlRequiredTitleElement -->
+<head th:replace="fragments::head(title='Welkom')">
+    <link rel="stylesheet" href="../static/css/toysforboys.css">
+</head>
+<body>
+<div th:if="${unshippedOrders != null}">
+    <h1>Unshipped orders</h1>
+    <div id="failed"
+         th:if="${failedOrderIds != null}">
+        <h2>
+            Shipping failed for order<span th:if="${failedOrderIds.size() > 1}"
+                                           th:text="|s|"> </span>
+            <span th:each="orderid:${failedOrderIds}"
+                  th:text="|${orderid}, |"></span>not enough stock.
+        </h2>
+    </div>
+    <form th:action="@{/shipping}"
+          th:object="${shippingForm}"
+          method="post">
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Ordered</th>
+                <th>Required</th>
+                <th>Customer</th>
+                <th>Comments</th>
+                <th>Status</th>
+                <th>Ship</th>
+            </tr>
+            <tr th:each="entry:${unshippedOrders}">
+                <td>
+                    <a th:href="@{/order/{id}(id=${entry.getKey().getId()})}">
+                        <span th:text="${entry.getKey().getId()}"></span>
+                    </a>
+                </td>
+                <td th:text="${entry.getKey().getOrderDate()}"></td>
+                <td th:text="${entry.getKey().getRequiredDate()}"></td>
+                <td th:text="${entry.getValue()}"></td>
+                <td th:text="${entry.getKey().getComments()}"></td>
+                <td>
+                    <img th:src="@{/images/{image}.png(image=${entry.getKey().getStatus()})}">
+                    <span th:text="${#strings.capitalize(entry.getKey().getStatus().toString().toLowerCase())}"></span>
+                </td>
+                <td><input name="orderList"
+                           th:value="${entry.getKey().getId()}"
+                           type="checkbox"/></td>
+            </tr>
+        </table>
+
+        <input type="submit"
+               value="Set as shipped">
+    </form>
+</div>
+</body>
+</html>
